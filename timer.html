@@ -3,32 +3,33 @@
     <head>
         <script type="text/javascript">
             function startTimer() {
-                var seconds = document.getElementById("set_seconds").value,
-                    minutes = document.getElementById("set_minutes").value;
+                 'use strict'; //only needs to be used once
+                //Use || to set defaults
+                var seconds = document.getElementById("set_seconds").value || 0;
+                var minutes = document.getElementById("set_minutes").value || 5;
 
-                document.getElementById("seconds_display").innerHTML = seconds;
-                document.getElementById("minutes_display").innerHTML = minutes;
+                var secondInterval = setInterval(function () {'use strict'; everySecond(); }, 1000);
+
+
+                document.getElementById("seconds_display").innerHTML = (seconds<10)?"0"+seconds:seconds;
+                document.getElementById("minutes_display").innerHTML = (minutes<10)?"0"+minutes:minutes;
 
                 function everySecond() {
-                    'use strict';
-                    if (seconds >= 0) {
-                        document.getElementById("seconds_display").innerHTML = seconds -= 1;
-                    } else {
-                        document.getElementById("seconds_display").innerHTML = 59;
+
+                    document.getElementById("minutes_display").innerHTML = (minutes<10)?"0"+minutes:minutes;
+                    document.getElementById("seconds_display").innerHTML = (seconds<10)?"0"+seconds:seconds;
+
+                    if (seconds > 0) {seconds -= 1;}
+                    else if (seconds === 0) {
+                        if(minutes===0){
+                           clearInterval(secondInterval);
+                        }
+                        else {
+                            minutes -=1;
+                            seconds = 59;
+                        }
                     }
                 }
-
-                function everyMinute() {
-                    'use strict';
-                    if (minutes >= 0) {
-                        document.getElementById("minutes_display").innerHTML = minutes -= 1;
-                    } else {
-                        document.getElementById("minutes_display").innerHTML = 0;
-                    }
-                }
-
-                var secondInterval = setInterval(function () {'use strict'; everySecond(); }, 1000),
-                    minuteInterval = setInterval(function () {'use strict'; everyMinute(); }, 60000);
             }
         </script>
         
@@ -44,6 +45,6 @@
         Set Time:   <input id="set_minutes" type="text" placeholder="Minutes"/>
                     <input id="set_seconds" type="text" placeholder="Seconds"/>
 
-                    <input id="button" onclick="startTimer" type="button" value="Start Timer"/>
+                    <input id="button" onclick="startTimer()" type="button" value="Start Timer"/>
     </body>
 </html>
